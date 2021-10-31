@@ -1,6 +1,7 @@
 package br.ufpb.edoe.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -12,7 +13,7 @@ import br.ufpb.edoe.repository.UserRepository;
 
 @Service
 public class UserService {
-    
+
     @Autowired
     private UserRepository userRepository;
 
@@ -27,5 +28,8 @@ public class UserService {
         return new UserDTO(user);
     }
 
-    
+    public boolean validateUser(User user) {
+        Optional<User> optUser = userRepository.findByEmail(user.getEmail());
+        return (optUser.isPresent() && optUser.get().getEmail().equals(user.getEmail()));
+    }
 }

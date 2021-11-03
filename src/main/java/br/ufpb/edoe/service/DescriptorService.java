@@ -14,11 +14,12 @@ public class DescriptorService {
     @Autowired
     private DescriptorRepository repository;
 
-    public DescriptorDTO addDescriptor(Descriptor descriptor){
-        if (repository.findByName(descriptor.getName()).isPresent())
+    public DescriptorDTO addDescriptor(Descriptor descriptor) {
+        descriptor.setName(descriptor.getName().toLowerCase().trim());
+        if (!repository.findByNameContainingIgnoreCase(descriptor.getName()).isEmpty())
             throw new DescriptorExistsException("Descritor já existe", "DescriptorService.addDescriptor");
         repository.save(descriptor);
         return new DescriptorDTO(descriptor);
     }
-    
+
 }

@@ -9,18 +9,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpb.edoe.dto.LoginResponseDTO;
-import br.ufpb.edoe.entity.User;
+import br.ufpb.edoe.dto.UserLoginDTO;
 import br.ufpb.edoe.security.JWTSecurity;
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/auth")
 public class LoginController {
 
   @Autowired
   private JWTSecurity jwtSecurity;
 
   @PostMapping("/login")
-  public ResponseEntity<LoginResponseDTO> authenticate(@RequestBody User user) {
+  public ResponseEntity<LoginResponseDTO> authenticate(@RequestBody UserLoginDTO user) {
     return new ResponseEntity<>(jwtSecurity.authenticate(user), HttpStatus.OK);
   }
 }

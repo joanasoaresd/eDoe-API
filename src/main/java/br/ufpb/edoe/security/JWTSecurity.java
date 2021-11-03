@@ -3,6 +3,7 @@ package br.ufpb.edoe.security;
 import java.util.Date;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import br.ufpb.edoe.dto.LoginResponseDTO;
 import br.ufpb.edoe.entity.User;
@@ -10,6 +11,7 @@ import br.ufpb.edoe.service.UserService;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
+@Service
 public class JWTSecurity {
 
   @Autowired

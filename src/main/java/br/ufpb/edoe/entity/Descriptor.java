@@ -16,6 +16,6 @@ public class Descriptor {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private String description;
+    private String name;
 
 }

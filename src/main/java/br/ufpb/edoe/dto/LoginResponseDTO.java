@@ -1,5 +1,8 @@
 package br.ufpb.edoe.dto;
 
+import lombok.Getter;
+
+@Getter
 public class LoginResponseDTO {
   private String message;
 

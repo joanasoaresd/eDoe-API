@@ -23,7 +23,7 @@ public class UserService {
 
     public UserDTO addUser(User user) {
         if (userRepository.findByEmail(user.getEmail()).isPresent())
-            throw new UserExistsException("Já Existe usuário com este email");
+            throw new UserExistsException ("Já Existe usuário com este email", "UserService.addUser");
         userRepository.save(user);
         return new UserDTO(user);
     }

@@ -1,20 +1,10 @@
 package br.ufpb.edoe.exceptions;
 
-public class UserExistsException extends IllegalArgumentException {
+import org.springframework.http.HttpStatus;
 
-    private String message;
+public class UserExistsException extends IllegalMainException {
 
-    public UserExistsException(String msg){
-        super();
-        this.message = msg;
+    public UserExistsException(String msg, String errorOrigin){
+        super(msg, HttpStatus.CONFLICT.value(), errorOrigin);
     }
-
-    public String getMessage() {
-		return message;
-	}
-
-	public void setMessage(String message) {
-		this.message = message;
-	}
-    
 }

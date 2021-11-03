@@ -20,7 +20,7 @@ import io.jsonwebtoken.SignatureException;
 import io.jsonwebtoken.UnsupportedJwtException;
 
 public class JWTFilter extends GenericFilterBean {
-  private static final int TOKEN_INDEX = 7;
+  public static final int TOKEN_INDEX = 7;
 
   @Override
   public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain)

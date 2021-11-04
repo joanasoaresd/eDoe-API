@@ -10,4 +10,8 @@ import br.ufpb.edoe.entity.Descriptor;
 @Repository
 public interface DescriptorRepository extends JpaRepository<Descriptor, String> {
     List<Descriptor> findByNameContainingIgnoreCase(String name);
+
+    List<Descriptor> findAllByOrderByNameAsc();
+
+    List<Descriptor> findAllByOrderByNameDesc();
 }

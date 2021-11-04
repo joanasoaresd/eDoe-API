@@ -4,6 +4,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
+import br.ufpb.edoe.exceptions.BadRequestParamsException;
 import br.ufpb.edoe.exceptions.DescriptorExistsException;
 import br.ufpb.edoe.exceptions.InvalidUserRoleException;
 import br.ufpb.edoe.exceptions.UserExistsException;
@@ -58,6 +59,16 @@ public class RestExceptionHandler {
   @ResponseStatus(HttpStatus.CONFLICT)
   @ExceptionHandler(DescriptorExistsException.class)
   public ErrorResponseBody handleDescriptorExistsException(DescriptorExistsException e) {
+    ErrorResponseBody error = new ErrorResponseBody();
+    error.setStatus(e.getErrorStatus());
+    error.setOrigin(e.getErrorOrigin());
+    error.setDetail(e.getMessage());
+    return error;
+  }
+
+  @ResponseStatus(HttpStatus.BAD_REQUEST)
+  @ExceptionHandler(BadRequestParamsException.class)
+  public ErrorResponseBody handleBadRequestParamsException(BadRequestParamsException e) {
     ErrorResponseBody error = new ErrorResponseBody();
     error.setStatus(e.getErrorStatus());
     error.setOrigin(e.getErrorOrigin());

@@ -15,9 +15,10 @@ import lombok.Data;
 public class User {
 
   @Id
-  @Column(name = "USER_ID",unique=true)
+  @Column(name = "USER_ID", unique = true)
   private String email;
 
+  private String senha;
   private String nome;
   private int celular;
   private UserClassType classe;

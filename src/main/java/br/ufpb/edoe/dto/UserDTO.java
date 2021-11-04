@@ -15,13 +15,12 @@ public class UserDTO {
   private String identificador;
   private UserRoleType papel = UserRoleType.APENAS_DOADOR;
 
-  public UserDTO(User u){
-      this.email = u.getEmail();
-      this.nome = u.getNome();
-      this.celular = u.getCelular();
-      this.papel = u.getPapel();
-      this.classe = u.getClasse();
-      this.identificador = u.getIdentificador();
+  public UserDTO(User u) {
+    this.email = u.getEmail();
+    this.nome = u.getNome();
+    this.celular = u.getCelular();
+    this.papel = u.getPapel();
+    this.classe = u.getClasse();
+    this.identificador = u.getIdentificador();
   }
 }
-

@@ -34,4 +34,8 @@ public class DescriptorService {
                 : repository.findAllByOrderByNameDesc();
     }
 
+    public boolean checkDescriptorExists(Descriptor descriptor) {
+        return !repository.findByNameContainingIgnoreCase(descriptor.getName()).isEmpty();
+    }
+
 }

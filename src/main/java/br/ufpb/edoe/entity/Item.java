@@ -17,11 +17,11 @@ import lombok.Data;
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
 
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "descriptor_id")
+    @JoinColumn(name = "descriptorId")
     private Descriptor descriptor;
 
     private String description;

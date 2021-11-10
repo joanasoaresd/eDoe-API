@@ -1,5 +1,7 @@
 package br.ufpb.edoe.service;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -39,6 +41,12 @@ public class ItemService {
         item.setAssociatedEmail(loggedEmail.get());
         repository.save(item);
         return new ItemDTO(item);
+    }
+
+    public List<ItemDTO> getItemsByDescriptorId(int id) {
+        List<ItemDTO> listItems = new ArrayList<>();
+        repository.findAllByDescriptorId(id).forEach(item -> listItems.add(new ItemDTO(item)));
+        return listItems;
     }
 
 }

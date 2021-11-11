@@ -8,8 +8,10 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.ufpb.edoe.dto.ItemDTO;
+import br.ufpb.edoe.dto.UpdateItemRequestDTO;
 import br.ufpb.edoe.entity.Item;
 import br.ufpb.edoe.exceptions.DescriptorNotFoundException;
+import br.ufpb.edoe.exceptions.ItemNotFoundException;
 import br.ufpb.edoe.exceptions.UserNotLoggedException;
 import br.ufpb.edoe.repository.ItemRepository;
 import br.ufpb.edoe.security.JWTSecurity;
@@ -58,6 +60,23 @@ public class ItemService {
         Item i = this.repository.getById(id);
         this.repository.delete(i);
         return new ItemDTO(i);
+    }
+
+    public ItemDTO updateItem(int id, UpdateItemRequestDTO dto, String header) {
+        Optional<String> loggedEmail = jwtSecurity.getUser(header);
+        if (!loggedEmail.isPresent()) {
+            throw new UserNotLoggedException("Usuário não logado", "ItemService.updateItem");
+        }
+
+        Optional<Item> i = repository.findById(id);
+        if (!i.isPresent()) {
+            throw new ItemNotFoundException("Id de Item não encontrado!", "ItemService.updateItem");
+        }
+        
+        i.get().setDescription(dto.getDescription());
+        i.get().setQty(dto.getQty());       
+        this.repository.save(i.get());
+        return new ItemDTO(i.get());
     }
 
 }

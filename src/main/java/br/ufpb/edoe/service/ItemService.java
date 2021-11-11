@@ -49,4 +49,15 @@ public class ItemService {
         return listItems;
     }
 
+    public ItemDTO removeItem(int id, String header) {
+        Optional<String> loggedEmail = jwtSecurity.getUser(header);
+        if (!loggedEmail.isPresent()) {
+            throw new UserNotLoggedException("Usuário não logado", "ItemService.removeItem");
+        }
+
+        Item i = this.repository.getById(id);
+        this.repository.delete(i);
+        return new ItemDTO(i);
+    }
+
 }

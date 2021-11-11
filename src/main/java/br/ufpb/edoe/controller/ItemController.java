@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpb.edoe.dto.ItemDTO;
+import br.ufpb.edoe.dto.UpdateItemRequestDTO;
 import br.ufpb.edoe.entity.Item;
 import br.ufpb.edoe.service.ItemService;
 
@@ -23,7 +25,7 @@ public class ItemController {
     @Autowired
     private ItemService service;
 
-    @GetMapping("/items/{id}")
+    @GetMapping("/items/descriptors/{id}")
     public ResponseEntity<List<ItemDTO>> getItemsByDescriptorId(@PathVariable int id) {
         return new ResponseEntity<>(service.getItemsByDescriptorId(id), HttpStatus.OK);
     }
@@ -36,5 +38,10 @@ public class ItemController {
     @DeleteMapping("/items/{id}")
     public ResponseEntity<ItemDTO> removeItem(@PathVariable Integer id, @RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(service.removeItem(id, token), HttpStatus.OK);
+    }
+
+    @PatchMapping("/items/{id}")
+    public ResponseEntity<ItemDTO> updateItem(@PathVariable Integer id, @RequestBody UpdateItemRequestDTO dto, @RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(service.updateItem(id, dto, token), HttpStatus.OK);
     }
 }

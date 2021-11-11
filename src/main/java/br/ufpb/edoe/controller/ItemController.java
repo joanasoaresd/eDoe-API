@@ -41,11 +41,13 @@ public class ItemController {
         return new ResponseEntity<>(service.addItem(item, token), HttpStatus.CREATED);
     }
 
+    @ApiOperation(value = "Solicita a remoção de um item")
     @DeleteMapping("/items/{id}")
     public ResponseEntity<ItemDTO> removeItem(@PathVariable Integer id, @RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(service.removeItem(id, token), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Solicita a atualização de um item")
     @PatchMapping("/items/{id}")
     public ResponseEntity<ItemDTO> updateItem(@PathVariable Integer id, @RequestBody UpdateItemRequestDTO dto,
             @RequestHeader("Authorization") String token) {

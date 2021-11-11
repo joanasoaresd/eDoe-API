@@ -5,13 +5,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.ufpb.edoe.exceptions.BadRequestParamsException;
-import br.ufpb.edoe.exceptions.DescriptorExistsException;
-import br.ufpb.edoe.exceptions.DescriptorNotFoundException;
-import br.ufpb.edoe.exceptions.InvalidUserRoleException;
-import br.ufpb.edoe.exceptions.ItemNotFoundException;
-import br.ufpb.edoe.exceptions.UserExistsException;
-import br.ufpb.edoe.exceptions.UserNotFoundException;
-import br.ufpb.edoe.exceptions.UserNotLoggedException;
+import br.ufpb.edoe.exceptions.descriptor.DescriptorExistsException;
+import br.ufpb.edoe.exceptions.descriptor.DescriptorNotFoundException;
+import br.ufpb.edoe.exceptions.item.ItemNotFoundException;
+import br.ufpb.edoe.exceptions.user.InvalidUserRoleException;
+import br.ufpb.edoe.exceptions.user.UserExistsException;
+import br.ufpb.edoe.exceptions.user.UserNotFoundException;
+import br.ufpb.edoe.exceptions.user.UserNotLoggedException;
 
 import org.springframework.http.HttpStatus;
 

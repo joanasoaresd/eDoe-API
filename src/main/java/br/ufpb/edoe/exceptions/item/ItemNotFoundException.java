@@ -1,6 +1,8 @@
-package br.ufpb.edoe.exceptions;
+package br.ufpb.edoe.exceptions.item;
 
 import org.springframework.http.HttpStatus;
+
+import br.ufpb.edoe.exceptions.IllegalMainException;
 
 public class ItemNotFoundException extends IllegalMainException {
 

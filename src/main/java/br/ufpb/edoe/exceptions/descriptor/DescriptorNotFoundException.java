@@ -1,6 +1,8 @@
-package br.ufpb.edoe.exceptions;
+package br.ufpb.edoe.exceptions.descriptor;
 
 import org.springframework.http.HttpStatus;
+
+import br.ufpb.edoe.exceptions.IllegalMainException;
 
 public class DescriptorNotFoundException extends IllegalMainException {
 

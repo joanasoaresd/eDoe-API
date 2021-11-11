@@ -10,9 +10,9 @@ import org.springframework.stereotype.Service;
 import br.ufpb.edoe.dto.ItemDTO;
 import br.ufpb.edoe.dto.UpdateItemRequestDTO;
 import br.ufpb.edoe.entity.Item;
-import br.ufpb.edoe.exceptions.DescriptorNotFoundException;
-import br.ufpb.edoe.exceptions.ItemNotFoundException;
-import br.ufpb.edoe.exceptions.UserNotLoggedException;
+import br.ufpb.edoe.exceptions.descriptor.DescriptorNotFoundException;
+import br.ufpb.edoe.exceptions.item.ItemNotFoundException;
+import br.ufpb.edoe.exceptions.user.UserNotLoggedException;
 import br.ufpb.edoe.repository.ItemRepository;
 import br.ufpb.edoe.security.JWTSecurity;
 

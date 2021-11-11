@@ -7,8 +7,8 @@ import org.springframework.stereotype.Service;
 
 import br.ufpb.edoe.dto.DescriptorDTO;
 import br.ufpb.edoe.entity.Descriptor;
-import br.ufpb.edoe.exceptions.DescriptorExistsException;
 import br.ufpb.edoe.exceptions.BadRequestParamsException;
+import br.ufpb.edoe.exceptions.descriptor.DescriptorExistsException;
 import br.ufpb.edoe.repository.DescriptorRepository;
 
 @Service
@@ -32,6 +32,10 @@ public class DescriptorService {
         }
         return ordenation.equalsIgnoreCase("asc") ? repository.findAllByOrderByNameAsc()
                 : repository.findAllByOrderByNameDesc();
+    }
+
+    public boolean checkDescriptorExists(Descriptor descriptor) {
+        return !repository.findByNameContainingIgnoreCase(descriptor.getName()).isEmpty();
     }
 
 }

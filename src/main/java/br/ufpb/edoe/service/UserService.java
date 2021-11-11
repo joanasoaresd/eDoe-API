@@ -11,10 +11,10 @@ import br.ufpb.edoe.dto.UserDTO;
 import br.ufpb.edoe.dto.UserLoginDTO;
 import br.ufpb.edoe.entity.User;
 import br.ufpb.edoe.enums.UserRoleType;
-import br.ufpb.edoe.exceptions.InvalidUserRoleException;
-import br.ufpb.edoe.exceptions.UserExistsException;
-import br.ufpb.edoe.exceptions.UserNotFoundException;
-import br.ufpb.edoe.exceptions.UserNotLoggedException;
+import br.ufpb.edoe.exceptions.user.InvalidUserRoleException;
+import br.ufpb.edoe.exceptions.user.UserExistsException;
+import br.ufpb.edoe.exceptions.user.UserNotFoundException;
+import br.ufpb.edoe.exceptions.user.UserNotLoggedException;
 import br.ufpb.edoe.repository.UserRepository;
 import br.ufpb.edoe.security.JWTSecurity;
 

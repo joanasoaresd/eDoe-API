@@ -5,11 +5,13 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
 
 import br.ufpb.edoe.exceptions.BadRequestParamsException;
-import br.ufpb.edoe.exceptions.DescriptorExistsException;
-import br.ufpb.edoe.exceptions.InvalidUserRoleException;
-import br.ufpb.edoe.exceptions.UserExistsException;
-import br.ufpb.edoe.exceptions.UserNotFoundException;
-import br.ufpb.edoe.exceptions.UserNotLoggedException;
+import br.ufpb.edoe.exceptions.descriptor.DescriptorExistsException;
+import br.ufpb.edoe.exceptions.descriptor.DescriptorNotFoundException;
+import br.ufpb.edoe.exceptions.item.ItemNotFoundException;
+import br.ufpb.edoe.exceptions.user.InvalidUserRoleException;
+import br.ufpb.edoe.exceptions.user.UserExistsException;
+import br.ufpb.edoe.exceptions.user.UserNotFoundException;
+import br.ufpb.edoe.exceptions.user.UserNotLoggedException;
 
 import org.springframework.http.HttpStatus;
 
@@ -66,9 +68,29 @@ public class RestExceptionHandler {
     return error;
   }
 
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(DescriptorNotFoundException.class)
+  public ErrorResponseBody handleDescriptorNotFoundException(DescriptorNotFoundException e) {
+    ErrorResponseBody error = new ErrorResponseBody();
+    error.setStatus(e.getErrorStatus());
+    error.setOrigin(e.getErrorOrigin());
+    error.setDetail(e.getMessage());
+    return error;
+  }
+
   @ResponseStatus(HttpStatus.BAD_REQUEST)
   @ExceptionHandler(BadRequestParamsException.class)
   public ErrorResponseBody handleBadRequestParamsException(BadRequestParamsException e) {
+    ErrorResponseBody error = new ErrorResponseBody();
+    error.setStatus(e.getErrorStatus());
+    error.setOrigin(e.getErrorOrigin());
+    error.setDetail(e.getMessage());
+    return error;
+  }
+
+  @ResponseStatus(HttpStatus.NOT_FOUND)
+  @ExceptionHandler(ItemNotFoundException.class)
+  public ErrorResponseBody handleItemNotFoundException(ItemNotFoundException e) {
     ErrorResponseBody error = new ErrorResponseBody();
     error.setStatus(e.getErrorStatus());
     error.setOrigin(e.getErrorOrigin());

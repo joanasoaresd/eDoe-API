@@ -12,10 +12,15 @@ import org.springframework.stereotype.Service;
 import br.ufpb.edoe.dto.ItemDTO;
 import br.ufpb.edoe.dto.UpdateItemRequestDTO;
 import br.ufpb.edoe.entity.Item;
+import br.ufpb.edoe.entity.User;
+import br.ufpb.edoe.enums.UserRoleType;
+import br.ufpb.edoe.exceptions.BadRequestParamsException;
 import br.ufpb.edoe.exceptions.descriptor.DescriptorNotFoundException;
 import br.ufpb.edoe.exceptions.item.ItemNotFoundException;
+import br.ufpb.edoe.exceptions.user.InvalidUserRoleException;
 import br.ufpb.edoe.exceptions.user.UserNotLoggedException;
 import br.ufpb.edoe.repository.ItemRepository;
+import br.ufpb.edoe.repository.UserRepository;
 import br.ufpb.edoe.security.JWTSecurity;
 
 @Service
@@ -30,11 +35,24 @@ public class ItemService {
     @Autowired
     private JWTSecurity jwtSecurity;
 
+    @Autowired
+    private UserRepository userRepository;
+
     public ItemDTO addItem(Item item, String header) {
         // Obtendo email do usuário logado
         Optional<String> loggedEmail = jwtSecurity.getUser(header);
         if (!loggedEmail.isPresent()) {
             throw new UserNotLoggedException("Usuário não logado", "ItemService.addItem");
+        }
+
+        Optional<User> user = userRepository.findByEmail(loggedEmail.get());
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired()==1) {
+            throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR", "UserService.addItem");
+        }
+
+        if(!checkItemsIsRequired(item.getIsRequired())){
+            throw new BadRequestParamsException("Parâmetro 'required' inválido.",
+                    "ItemService.addItem");
         }
 
         if (!descriptorService.checkDescriptorExists(item.getDescriptor())) {
@@ -74,6 +92,12 @@ public class ItemService {
         }
 
         Item i = this.repository.getById(id);
+
+        Optional<User> user = userRepository.findByEmail(loggedEmail.get());
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.getIsRequired()==1) {
+            throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR", "UserService.removeItem");
+        }
+
         this.repository.delete(i);
         return new ItemDTO(i);
     }
@@ -89,10 +113,23 @@ public class ItemService {
             throw new ItemNotFoundException("Id de Item não encontrado!", "ItemService.updateItem");
         }
 
+        Optional<User> user = userRepository.findByEmail(loggedEmail.get());
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.get().getIsRequired()==1) {
+            throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR", "UserService.updateItem");
+        }
+
+        if(!checkItemsIsRequired(i.get().getIsRequired())){
+            throw new BadRequestParamsException("Parâmetro 'required' inválido. ",
+                    "ItemService.updateItem");
+        }
+
         i.get().setDescription(dto.getDescription());
         i.get().setQty(dto.getQty());
         this.repository.save(i.get());
         return new ItemDTO(i.get());
     }
 
+    public boolean checkItemsIsRequired(int required) {
+        return required != 0 && required != 1 ? false : true;
+    }
 }

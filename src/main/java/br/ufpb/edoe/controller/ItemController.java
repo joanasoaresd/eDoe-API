@@ -35,6 +35,12 @@ public class ItemController {
         return new ResponseEntity<>(service.getItemsByDescriptorId(id), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Retorna um lista com todos items a partir de uma string de busca")
+    @GetMapping("/items/{search}")
+    public ResponseEntity<List<ItemDTO>> getItemsByString(@PathVariable String search) {
+        return new ResponseEntity<>(service.getItemsByString(search), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Solicita o cadastro de um item")
     @PostMapping("/items")
     public ResponseEntity<ItemDTO> addItem(@RequestBody Item item, @RequestHeader("Authorization") String token) {

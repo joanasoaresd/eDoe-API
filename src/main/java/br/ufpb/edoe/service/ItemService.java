@@ -1,8 +1,10 @@
 package br.ufpb.edoe.service;
 
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
+import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -51,6 +53,14 @@ public class ItemService {
         return listItems;
     }
 
+    public List<ItemDTO> getItemsByString(String search) {
+        List<ItemDTO> listItems = new ArrayList<>();
+        repository.findAllByDescriptorNameContainingIgnoreCase(search).forEach(item -> listItems.add(new ItemDTO(item)));
+        listItems.sort((item1, item2) -> item1.getDescriptor().getName().compareTo(item2.getDescriptor().getName()));
+        return listItems;
+    }
+
+    //listaDosItems.stream().sorted((item1, item2) -> item1.getDescriptor().getName().compareTo(item2.getDescriptor().getName()))
     public ItemDTO removeItem(int id, String header) {
         Optional<String> loggedEmail = jwtSecurity.getUser(header);
         if (!loggedEmail.isPresent()) {

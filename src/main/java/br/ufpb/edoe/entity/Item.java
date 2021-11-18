@@ -27,4 +27,5 @@ public class Item {
     private String description;
     private int qty;
     private String associatedEmail;
+    private int isRequired;
 }

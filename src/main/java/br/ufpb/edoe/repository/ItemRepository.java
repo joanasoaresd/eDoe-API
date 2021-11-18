@@ -10,4 +10,8 @@ import br.ufpb.edoe.entity.Item;
 @Repository
 public interface ItemRepository extends JpaRepository<Item, Integer> {
   List<Item> findAllByDescriptorId(int id);
+
+  List<Item> findAllByDescriptorNameContainingIgnoreCase(String search);
+
+  List<Item> findTop10ByOrderByQtyDesc();
 }

@@ -1,10 +1,8 @@
 package br.ufpb.edoe.service;
 
 import java.util.ArrayList;
-import java.util.Comparator;
 import java.util.List;
 import java.util.Optional;
-import java.util.stream.Stream;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -46,13 +44,12 @@ public class ItemService {
         }
 
         Optional<User> user = userRepository.findByEmail(loggedEmail.get());
-        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired()==1) {
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == 1) {
             throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR", "UserService.addItem");
         }
 
-        if(!checkItemsIsRequired(item.getIsRequired())){
-            throw new BadRequestParamsException("Parâmetro 'required' inválido.",
-                    "ItemService.addItem");
+        if (!checkItemsIsRequired(item.getIsRequired())) {
+            throw new BadRequestParamsException("Parâmetro 'required' inválido.", "ItemService.addItem");
         }
 
         if (!descriptorService.checkDescriptorExists(item.getDescriptor())) {
@@ -65,22 +62,42 @@ public class ItemService {
         return new ItemDTO(item);
     }
 
-    public List<ItemDTO> getItemsByDescriptorId(int id) {
+    public List<ItemDTO> getItemsByDescriptorId(int id, int type) {
         List<ItemDTO> listItems = new ArrayList<>();
-        repository.findAllByDescriptorId(id).forEach(item -> listItems.add(new ItemDTO(item)));
+        if (type != 0 && type != 1) {
+            throw new BadRequestParamsException("Parâmetro 'type' inválido. Valor usado: " + type,
+                    "ItemService.getItemsByDescriptorId");
+        }
+        repository.findAllByDescriptorId(id).forEach(item -> {
+            if (item.getIsRequired() == type)
+                listItems.add(new ItemDTO(item));
+        });
         return listItems;
     }
 
-    public List<ItemDTO> getTop10ItemsByQty() {
+    public List<ItemDTO> getTop10ItemsByQty(int type) {
         List<ItemDTO> listItems = new ArrayList<>();
-        repository.findTop10ByOrderByQtyDesc().forEach(item -> listItems.add(new ItemDTO(item)));
+        if (type != 0 && type != 1) {
+            throw new BadRequestParamsException("Parâmetro 'type' inválido. Valor usado: " + type,
+                    "ItemService.getTop10ItemsByQty");
+        }
+        repository.findTop10ByOrderByQtyDesc().forEach(item -> {
+            if (item.getIsRequired() == type)
+                listItems.add(new ItemDTO(item));
+        });
         return listItems;
     }
 
-    public List<ItemDTO> getItemsByString(String search) {
+    public List<ItemDTO> getItemsByString(String search, int type) {
         List<ItemDTO> listItems = new ArrayList<>();
-        repository.findAllByDescriptorNameContainingIgnoreCase(search)
-                .forEach(item -> listItems.add(new ItemDTO(item)));
+        if (type != 0 && type != 1) {
+            throw new BadRequestParamsException("Parâmetro 'type' inválido. Valor usado: " + type,
+                    "ItemService.getItemsByString");
+        }
+        repository.findAllByDescriptorNameContainingIgnoreCase(search).forEach(item -> {
+            if (item.getIsRequired() == type)
+                listItems.add(new ItemDTO(item));
+        });
         listItems.sort((item1, item2) -> item1.getDescriptor().getName().compareTo(item2.getDescriptor().getName()));
         return listItems;
     }
@@ -94,8 +111,9 @@ public class ItemService {
         Item i = this.repository.getById(id);
 
         Optional<User> user = userRepository.findByEmail(loggedEmail.get());
-        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.getIsRequired()==1) {
-            throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR", "UserService.removeItem");
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.getIsRequired() == 1) {
+            throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR",
+                    "UserService.removeItem");
         }
 
         this.repository.delete(i);
@@ -114,13 +132,13 @@ public class ItemService {
         }
 
         Optional<User> user = userRepository.findByEmail(loggedEmail.get());
-        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.get().getIsRequired()==1) {
-            throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR", "UserService.updateItem");
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.get().getIsRequired() == 1) {
+            throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR",
+                    "UserService.updateItem");
         }
 
-        if(!checkItemsIsRequired(i.get().getIsRequired())){
-            throw new BadRequestParamsException("Parâmetro 'required' inválido. ",
-                    "ItemService.updateItem");
+        if (!checkItemsIsRequired(i.get().getIsRequired())) {
+            throw new BadRequestParamsException("Parâmetro 'required' inválido. ", "ItemService.updateItem");
         }
 
         i.get().setDescription(dto.getDescription());

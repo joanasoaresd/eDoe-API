@@ -60,7 +60,6 @@ public class ItemService {
         return listItems;
     }
 
-    //listaDosItems.stream().sorted((item1, item2) -> item1.getDescriptor().getName().compareTo(item2.getDescriptor().getName()))
     public ItemDTO removeItem(int id, String header) {
         Optional<String> loggedEmail = jwtSecurity.getUser(header);
         if (!loggedEmail.isPresent()) {

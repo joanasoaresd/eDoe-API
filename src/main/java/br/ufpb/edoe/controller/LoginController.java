@@ -13,6 +13,7 @@ import br.ufpb.edoe.dto.LoginResponseDTO;
 import br.ufpb.edoe.dto.UserLoginDTO;
 import br.ufpb.edoe.security.JWTSecurity;
 import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiImplicitParam;
 import io.swagger.annotations.ApiOperation;
 
 @Api(value = "LoginController", produces = MediaType.APPLICATION_JSON_VALUE, tags = { "Login" })
@@ -24,6 +25,7 @@ public class LoginController {
   private JWTSecurity jwtSecurity;
 
   @ApiOperation(value = "Solicita a efetuação de login de um usuário")
+  @ApiImplicitParam(name = "user", value = "Payload contendo os campos de identificação do usuário para realizar login.")
   @PostMapping("/login")
   public ResponseEntity<LoginResponseDTO> authenticate(@RequestBody UserLoginDTO user) {
     return new ResponseEntity<>(jwtSecurity.authenticate(user), HttpStatus.OK);

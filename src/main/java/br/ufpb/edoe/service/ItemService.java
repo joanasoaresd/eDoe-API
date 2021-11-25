@@ -24,6 +24,9 @@ import br.ufpb.edoe.security.JWTSecurity;
 @Service
 public class ItemService {
 
+    public static final int DONATE = 0;
+    public static final int IS_REQUIRED = 1;
+
     @Autowired
     private ItemRepository repository;
 
@@ -44,7 +47,7 @@ public class ItemService {
         }
 
         Optional<User> user = userRepository.findByEmail(loggedEmail.get());
-        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == 1) {
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == IS_REQUIRED) {
             throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR", "UserService.addItem");
         }
 
@@ -102,6 +105,26 @@ public class ItemService {
         return listItems;
     }
 
+    public List<ItemDTO> getItemsMatches(int id, String header){
+        Item item = this.repository.findById(id).get();
+
+        Optional<String> loggedEmail = jwtSecurity.getUser(header);
+        if (!loggedEmail.isPresent()) {
+            throw new UserNotLoggedException("Usuário não logado", "ItemService.getItemsMatches");
+        }
+
+        Optional<User> user = userRepository.findByEmail(loggedEmail.get());
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR)) {
+            throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR", "UserService.getItemsMatches");
+        }
+
+        if (item.getIsRequired() != IS_REQUIRED) {
+            throw new BadRequestParamsException("Parâmetro 'required' inválido.", "ItemService.getItemsMatches");
+        }
+
+        return this.getItemsByDescriptorId(item.getDescriptor().getId(), DONATE);            
+    }
+
     public ItemDTO removeItem(int id, String header) {
         Optional<String> loggedEmail = jwtSecurity.getUser(header);
         if (!loggedEmail.isPresent()) {
@@ -148,6 +171,6 @@ public class ItemService {
     }
 
     public boolean checkItemsIsRequired(int required) {
-        return required != 0 && required != 1 ? false : true;
+        return required != DONATE && required != IS_REQUIRED ? false : true;
     }
 }

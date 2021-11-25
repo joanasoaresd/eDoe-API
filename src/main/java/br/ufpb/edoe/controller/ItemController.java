@@ -52,6 +52,12 @@ public class ItemController {
         return new ResponseEntity<>(service.getItemsByString(search, type), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Retorna um lista com todos matches  de itens para doação e itens necessários")
+    @GetMapping("/items/matches/{id}")
+    public ResponseEntity<List<ItemDTO>> getItemsMatches(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(service.getItemsMatches(id, token), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Solicita o cadastro de um item")
     @ApiImplicitParam(name = "item", value = "Payload contendo o corpo do item a ser cadastrado.")
     @PostMapping("/items")

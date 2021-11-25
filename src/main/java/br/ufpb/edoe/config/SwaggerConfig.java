@@ -35,7 +35,9 @@ public class SwaggerConfig {
   }
 
   private ApiInfo apiInfo() {
-    return new ApiInfoBuilder().title("eDoe Api").description("Api para uma vaquinha virtual").version("1.0").build();
+    return new ApiInfoBuilder().title("eDoe Api")
+        .description("É uma api desenvolvida com o objetivo de gerenciar doações no Campus IV da UFPB").version("1.2")
+        .build();
   }
 
 }

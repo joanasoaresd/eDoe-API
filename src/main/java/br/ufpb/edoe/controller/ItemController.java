@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpb.edoe.dto.DonateDTO;
 import br.ufpb.edoe.dto.ItemDTO;
 import br.ufpb.edoe.dto.UpdateItemRequestDTO;
 import br.ufpb.edoe.entity.Item;
@@ -52,11 +53,26 @@ public class ItemController {
         return new ResponseEntity<>(service.getItemsByString(search, type), HttpStatus.OK);
     }
 
+    @ApiOperation(value = "Retorna um lista com todos matches  de itens para doação e itens necessários")
+    @GetMapping("/items/matches/{id}")
+    public ResponseEntity<List<ItemDTO>> getItemsMatches(@PathVariable int id, @RequestHeader("Authorization") String token) {
+        return new ResponseEntity<>(service.getItemsMatches(id, token), HttpStatus.OK);
+    }
+
     @ApiOperation(value = "Solicita o cadastro de um item")
     @ApiImplicitParam(name = "item", value = "Payload contendo o corpo do item a ser cadastrado.")
     @PostMapping("/items")
     public ResponseEntity<ItemDTO> addItem(@RequestBody Item item, @RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(service.addItem(item, token), HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "Solicita o cadastro de uma doação")
+    @ApiImplicitParam(name = "donateDTO", value = "Payload contendo o corpo contendo os dados necessários pra realizar uma doação.")
+    @PostMapping("/items/donate")
+    public ResponseEntity<Void> donateItem(@RequestBody DonateDTO donateDTO,
+            @RequestHeader("Authorization") String token) {
+        service.donateItem(donateDTO, token);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "Solicita a remoção de um item")

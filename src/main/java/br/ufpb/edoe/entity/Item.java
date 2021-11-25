@@ -28,4 +28,5 @@ public class Item {
     private int qty;
     private String associatedEmail;
     private int isRequired;
+    private int isRemoved = 0;
 }

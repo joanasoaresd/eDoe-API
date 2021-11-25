@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import br.ufpb.edoe.dto.DonateDTO;
 import br.ufpb.edoe.dto.ItemDTO;
 import br.ufpb.edoe.dto.UpdateItemRequestDTO;
 import br.ufpb.edoe.entity.Item;
@@ -63,6 +64,15 @@ public class ItemController {
     @PostMapping("/items")
     public ResponseEntity<ItemDTO> addItem(@RequestBody Item item, @RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(service.addItem(item, token), HttpStatus.CREATED);
+    }
+
+    @ApiOperation(value = "Solicita o cadastro de uma doação")
+    @ApiImplicitParam(name = "donateDTO", value = "Payload contendo o corpo contendo os dados necessários pra realizar uma doação.")
+    @PostMapping("/items/donate")
+    public ResponseEntity<Void> donateItem(@RequestBody DonateDTO donateDTO,
+            @RequestHeader("Authorization") String token) {
+        service.donateItem(donateDTO, token);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 
     @ApiOperation(value = "Solicita a remoção de um item")

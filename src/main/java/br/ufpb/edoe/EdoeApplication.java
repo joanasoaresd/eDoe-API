@@ -14,7 +14,7 @@ public class EdoeApplication {
   public FilterRegistrationBean<JWTFilter> filterJwt() {
     FilterRegistrationBean<JWTFilter> filterRB = new FilterRegistrationBean<>();
     filterRB.setFilter(new JWTFilter());
-    filterRB.addUrlPatterns("/users/role", "/items");
+    filterRB.addUrlPatterns("/users/role", "/items", "/items/donate");
     return filterRB;
   }
 

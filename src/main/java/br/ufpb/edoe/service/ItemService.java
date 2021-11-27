@@ -55,13 +55,13 @@ public class ItemService {
         }
 
         Optional<User> user = userRepository.findByEmail(loggedEmail.get());
-        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == 1) {
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == IS_REQUIRED) {
             throw new InvalidUserRoleException(
                     "Usuário não possui o papel de APENAS_RECEPTOR para cadastrar um item necessário.",
                     "ItemService.addItem");
         }
 
-        if (user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == 0) {
+        if (user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == DONATE) {
             throw new InvalidUserRoleException(
                     "Usuário não possui o papel de APENAS_DOADOR, DOADOR_RECEPTOR ou ADMIN para cadastrar um item a ser doado.",
                     "ItemService.addItem");

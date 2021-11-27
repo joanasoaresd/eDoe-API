@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.ufpb.edoe.dto.DonateDTO;
+import br.ufpb.edoe.dto.DonationDTO;
 import br.ufpb.edoe.dto.ItemDTO;
 import br.ufpb.edoe.dto.UpdateItemRequestDTO;
 import br.ufpb.edoe.entity.Donation;
@@ -141,6 +142,14 @@ public class ItemService {
         return this.getItemsByDescriptorId(item.getDescriptor().getId(), DONATE);
     }
 
+    public List<DonationDTO> getDonatesHistory() {
+        List<DonationDTO> listDonates = new ArrayList<>();
+        this.donateRepository.findAll().forEach(d -> {
+                listDonates.add(new DonationDTO(d));
+        });
+        return listDonates;
+    }
+
     public ItemDTO removeItem(int id, String header) {
         Optional<String> loggedEmail = jwtSecurity.getUser(header);
         if (!loggedEmail.isPresent()) {
@@ -246,6 +255,7 @@ public class ItemService {
         donate.setItemDonate(itemDonate.get());
         donate.setUserDonate(user.get());
         donate.setUserReceptor(userReceptor);
+        donate.setQty(donateDTO.getQty());
 
         // Salvando doacao em banco
         donateRepository.save(donate);

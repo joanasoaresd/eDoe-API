@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import br.ufpb.edoe.dto.DonateDTO;
+import br.ufpb.edoe.dto.DonationDTO;
 import br.ufpb.edoe.dto.ItemDTO;
 import br.ufpb.edoe.dto.UpdateItemRequestDTO;
 import br.ufpb.edoe.entity.Donation;
@@ -54,13 +55,13 @@ public class ItemService {
         }
 
         Optional<User> user = userRepository.findByEmail(loggedEmail.get());
-        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == 1) {
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == IS_REQUIRED) {
             throw new InvalidUserRoleException(
                     "Usuário não possui o papel de APENAS_RECEPTOR para cadastrar um item necessário.",
                     "ItemService.addItem");
         }
 
-        if (user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == 0) {
+        if (user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && item.getIsRequired() == DONATE) {
             throw new InvalidUserRoleException(
                     "Usuário não possui o papel de APENAS_DOADOR, DOADOR_RECEPTOR ou ADMIN para cadastrar um item a ser doado.",
                     "ItemService.addItem");
@@ -82,7 +83,7 @@ public class ItemService {
 
     public List<ItemDTO> getItemsByDescriptorId(int id, int type) {
         List<ItemDTO> listItems = new ArrayList<>();
-        if (type != 0 && type != 1) {
+        if (type != DONATE && type != IS_REQUIRED) {
             throw new BadRequestParamsException("Parâmetro 'type' inválido. Valor usado: " + type,
                     "ItemService.getItemsByDescriptorId");
         }
@@ -95,7 +96,7 @@ public class ItemService {
 
     public List<ItemDTO> getTop10ItemsByQty(int type) {
         List<ItemDTO> listItems = new ArrayList<>();
-        if (type != 0 && type != 1) {
+        if (type != DONATE && type != IS_REQUIRED) {
             throw new BadRequestParamsException("Parâmetro 'type' inválido. Valor usado: " + type,
                     "ItemService.getTop10ItemsByQty");
         }
@@ -108,7 +109,7 @@ public class ItemService {
 
     public List<ItemDTO> getItemsByString(String search, int type) {
         List<ItemDTO> listItems = new ArrayList<>();
-        if (type != 0 && type != 1) {
+        if (type != DONATE && type != IS_REQUIRED) {
             throw new BadRequestParamsException("Parâmetro 'type' inválido. Valor usado: " + type,
                     "ItemService.getItemsByString");
         }
@@ -141,6 +142,14 @@ public class ItemService {
         return this.getItemsByDescriptorId(item.getDescriptor().getId(), DONATE);
     }
 
+    public List<DonationDTO> getDonatesHistory() {
+        List<DonationDTO> listDonates = new ArrayList<>();
+        this.donateRepository.findAll().forEach(d -> {
+                listDonates.add(new DonationDTO(d));
+        });
+        return listDonates;
+    }
+
     public ItemDTO removeItem(int id, String header) {
         Optional<String> loggedEmail = jwtSecurity.getUser(header);
         if (!loggedEmail.isPresent()) {
@@ -150,13 +159,13 @@ public class ItemService {
         Item i = this.repository.getById(id);
 
         Optional<User> user = userRepository.findByEmail(loggedEmail.get());
-        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.getIsRequired() == 1) {
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.getIsRequired() == IS_REQUIRED) {
             throw new InvalidUserRoleException(
                     "Usuário não possui o papel de APENAS_RECEPTOR para remover um item necessário.",
                     "UserService.removeItem");
         }
 
-        if (user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.getIsRequired() == 0) {
+        if (user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.getIsRequired() == DONATE) {
             throw new InvalidUserRoleException(
                     "Usuário não possui o papel de APENAS_DOADOR, DOADOR_RECEPTOR ou ADMIN para remover um item a ser doado.",
                     "ItemService.addItem");
@@ -182,7 +191,7 @@ public class ItemService {
         }
 
         Optional<User> user = userRepository.findByEmail(loggedEmail.get());
-        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.get().getIsRequired() == 1) {
+        if (!user.get().getPapel().equals(UserRoleType.APENAS_RECEPTOR) && i.get().getIsRequired() == IS_REQUIRED) {
             throw new InvalidUserRoleException("Usuário não possui o papel de APENAS_RECEPTOR",
                     "UserService.updateItem");
         }
@@ -246,6 +255,7 @@ public class ItemService {
         donate.setItemDonate(itemDonate.get());
         donate.setUserDonate(user.get());
         donate.setUserReceptor(userReceptor);
+        donate.setQty(donateDTO.getQty());
 
         // Salvando doacao em banco
         donateRepository.save(donate);

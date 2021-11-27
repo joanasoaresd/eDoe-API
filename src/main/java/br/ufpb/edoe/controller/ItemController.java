@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.ufpb.edoe.dto.DonateDTO;
+import br.ufpb.edoe.dto.DonationDTO;
 import br.ufpb.edoe.dto.ItemDTO;
 import br.ufpb.edoe.dto.UpdateItemRequestDTO;
 import br.ufpb.edoe.entity.Item;
@@ -57,6 +58,12 @@ public class ItemController {
     @GetMapping("/items/matches/{id}")
     public ResponseEntity<List<ItemDTO>> getItemsMatches(@PathVariable int id, @RequestHeader("Authorization") String token) {
         return new ResponseEntity<>(service.getItemsMatches(id, token), HttpStatus.OK);
+    }
+
+    @ApiOperation(value = "Retorna o histórico de doações do sistema")
+    @GetMapping("/items/donates/history")
+    public ResponseEntity<List<DonationDTO>> getDonatesHistory() {
+        return new ResponseEntity<>(service.getDonatesHistory(), HttpStatus.OK);
     }
 
     @ApiOperation(value = "Solicita o cadastro de um item")

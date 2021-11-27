@@ -38,4 +38,6 @@ public class Donation {
   @OneToOne(fetch = FetchType.LAZY)
   @JoinColumn(name = "itemDonateId")
   private Item itemDonate;
+
+  private int qty;
 }

@@ -3,7 +3,7 @@ e-Doe API
 </h1>
 
 <p align="center">
-É uma api desenvolvida com o objetivo de gerenciar doações no Campus IV da UFPB.
+Api desenvolvida com o objetivo de gerenciar doações no Campus IV da UFPB.
 </p>
 
 <p align="center">
@@ -23,18 +23,20 @@ e-Doe API
 | :---: | :---: |
 | [Anderson ](https://git.phoebus.com.br/anderson.freitas) | [Joana Darck](https://github.com/joanasoaresd) |
 
+## Como acessar
+Atualmente a API está hospedada no Heroku, podendo ser acessada [aqui](https://edoe-spring-api.herokuapp.com/).
+## Documentação
+Link para acesso da documentação:
+- [Swagger](https://edoe-spring-api.herokuapp.com/swagger-ui/index.html)
 
 ## Tecnologias usadas
 
+- [x] Java
 - [x] Spring Boot
 - [x] Jpa
 - [x] H2 Database
 - [x] Token Jwt
-
 ## Ferramentas usadas
 - [Visual Studio Code](https://code.visualstudio.com/)
 - [Postman](https://www.postman.com/)
 
-## Documentação
-Para acessar a documentação, execute o projeto e acesso o link abaixo:
-- [Swagger](http://localhost:8080/v1/api/swagger-ui/index.html)

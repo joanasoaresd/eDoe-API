@@ -23,6 +23,10 @@ Api desenvolvida com o objetivo de gerenciar doações no Campus IV da UFPB.
 | :---: | :---: |
 | [Anderson ](https://git.phoebus.com.br/anderson.freitas) | [Joana Darck](https://github.com/joanasoaresd) |
 
+## Como usar
+Uma pasta no drive, com um vídeo demonstrativo, juntamente com as collections do Postman usadas, se encontra abaixo:
+- [Google Drive](https://drive.google.com/drive/folders/1fNf5Vf8PLvJF4v5a_5hWezLcT0Cqp3jX?usp=sharing)
+
 ## Como acessar
 Atualmente a API está hospedada no Heroku, podendo ser acessada [aqui](https://edoe-spring-api.herokuapp.com/).
 ## Documentação
